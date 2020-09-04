@@ -97,6 +97,12 @@ public:
             "The memo to descript transaction"
         )
         (
+	    "exclude,e",
+	    value<colon_delimited2_item<uint64_t, uint64_t>>(&option_.exclude),
+            "Exclude utxo whose value is between this range [begin:end) the "
+            "limit of which is split by a colon."
+	)
+        (
             "fee,f",
             value<uint64_t>(&option_.fee)->default_value(10000),
             "Transaction fee. defaults to 10000 ETP bits"
@@ -126,6 +132,7 @@ public:
         std::string from;
         std::string change;
         std::string memo;
+        colon_delimited2_item<uint64_t, uint64_t> exclude = { 0, 0 };
     } option_;
 
 };
