@@ -122,7 +122,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\..\..\miniupnp\miniupnpc\msvc\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\miniupnp\miniupnpc\msvc\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>miniupnpc.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\..\..\miniupnp\miniupnpc\msvc\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\miniupnp\miniupnpc\msvc\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>miniupnpc.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>

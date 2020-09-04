@@ -55,6 +55,7 @@
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\burn.hpp" />
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\changepasswd.hpp" />
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\createasset.hpp" />
+    <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\createmoremultisigtx.hpp" />
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\createmultisigtx.hpp" />
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\createrawtx.hpp" />
     <ClInclude Include="..\..\..\include\metaverse\explorer\extensions\commands\decoderawtx.hpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\burn.cpp" />
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\changepasswd.cpp" />
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\createasset.cpp" />
+    <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\createmoremultisigtx.cpp" />
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\createmultisigtx.cpp" />
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\createrawtx.cpp" />
     <ClCompile Include="..\..\..\src\lib\explorer\extensions\commands\decoderawtx.cpp" />

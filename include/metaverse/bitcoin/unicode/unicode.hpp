@@ -95,12 +95,15 @@
             boost::filesystem::path::imbue(std::locale()); \
             \
             auto variables = bc::to_utf8(_wenviron); \
+            auto old_environ = environ; \
             environ = reinterpret_cast<char**>(variables.data()); \
             \
             auto arguments = bc::to_utf8(argc, argv); \
             auto args = reinterpret_cast<char**>(arguments.data()); \
             \
-            return libbitcoin::main(argc, args); \
+            auto ret = libbitcoin::main(argc, args); \
+            environ = old_environ; \
+            return ret; \
         }
 #else
     #define BC_USE_MVS_MAIN \

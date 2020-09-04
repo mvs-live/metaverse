@@ -90,6 +90,7 @@
 #include <metaverse/explorer/extensions/commands/changepasswd.hpp>
 #include <metaverse/explorer/extensions/commands/getmemorypool.hpp>
 #include <metaverse/explorer/extensions/commands/createmultisigtx.hpp>
+#include <metaverse/explorer/extensions/commands/createmoremultisigtx.hpp>
 #include <metaverse/explorer/extensions/commands/createrawtx.hpp>
 #include <metaverse/explorer/extensions/commands/decoderawtx.hpp>
 #include <metaverse/explorer/extensions/commands/deletemultisig.hpp>
@@ -168,6 +169,7 @@ void broadcast_extension(const function<void(shared_ptr<command>)> func, std::os
     // multi-sig
     func(make_shared<getpublickey>());
     func(make_shared<createmultisigtx>());
+	func(make_shared<createmoremultisigtx>());
     func(make_shared<getnewmultisig>());
     func(make_shared<listmultisig>());
     func(make_shared<deletemultisig>());
@@ -325,6 +327,8 @@ shared_ptr<command> find_extension(const string& symbol)
         return make_shared<deletemultisig>();
     if (symbol == createmultisigtx::symbol())
         return make_shared<createmultisigtx>();
+	if (symbol == createmoremultisigtx::symbol())
+		return make_shared<createmoremultisigtx>();
     if (symbol == signmultisigtx::symbol())
         return make_shared<signmultisigtx>();
 

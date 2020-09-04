@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 #include <metaverse/explorer/define.hpp>
 #include <metaverse/explorer/extensions/command_extension.hpp>
@@ -30,30 +29,29 @@ namespace explorer {
 namespace commands {
 
 
-
-/************************ sendmore *************************/
-
-class sendmore: public send_command
+class createmoremultisigtx: public command_extension
 {
 public:
-    static const char* symbol(){ return "sendmore";}
+    static const char* symbol() { return "createmoremultisigtx";}
     const char* name() override { return symbol();}
-    bool category(int bs) override { return (ex_online & bs ) == bs; }
-    const char* description() override { return "send etp to multi target."; }
+    bool category(int bs) override { return (ctgy_extension & bs ) == bs; }
+    const char* description() override { return "Create more multiple signatures."; }
 
     arguments_metadata& load_arguments() override
     {
         return get_argument_metadata()
-            .add("ACCOUNTNAME", 1)
-            .add("ACCOUNTAUTH", 1);
+               .add("ACCOUNTNAME", 1)
+               .add("ACCOUNTAUTH", 1)
+               .add("FROMADDRESS", 1);
     }
 
     void load_fallbacks (std::istream& input,
-        po::variables_map& variables) override
+                         po::variables_map& variables) override
     {
         const auto raw = requires_raw_input();
         load_input(auth_.name, "ACCOUNTNAME", variables, input, raw);
         load_input(auth_.auth, "ACCOUNTAUTH", variables, input, raw);
+        load_input(argument_.from, "FROMADDRESS", variables, input, raw);
     }
 
     options_metadata& load_options() override
@@ -64,7 +62,7 @@ public:
         (
             BX_HELP_VARIABLE ",h",
             value<bool>()->zero_tokens(),
-            "Send to more target. "
+            "Get a description and instructions for this command."
         )
         (
             "ACCOUNTNAME",
@@ -77,36 +75,31 @@ public:
             BX_ACCOUNT_AUTH
         )
         (
-            "receivers,r",
-            value<std::vector<std::string>>(&argument_.receivers)->required(),
-            "Send to [did/address:etp_bits]."
+            "FROMADDRESS",
+            value<std::string>(&argument_.from)->required(),
+            "Send from this address, must be a multi-signature script address."
         )
         (
-            "mychange,m",
-            value<std::string>(&option_.change)->default_value(""),
-            "Change to this did/address"
+			"receivers,r",
+			value<std::vector<std::string>>(&argument_.receivers)->required(),
+			"Send to [address:etp_bits]."
         )
         (
-            "from,s",
-            value<std::string>(&option_.from)->default_value(""),
-            "Send from this did/address"
+            "symbol,s",
+            value<std::string>(&option_.symbol),
+            "asset name, not specify this option for etp tx"
         )
         (
-            "memo,i",
-            value<std::string>(&option_.memo)->default_value(""),
-            "The memo to descript transaction"
+            "type,t",
+            value<uint16_t>(&option_.type)->default_value(0),
+            "Transaction type, defaults to 0. 0 -- transfer etp, 3 -- transfer asset"
         )
-        (
-	    "exclude,e",
-	    value<colon_delimited2_item<uint64_t, uint64_t>>(&option_.exclude),
-            "Exclude utxo whose value is between this range [begin:end) the "
-            "limit of which is split by a colon."
-	)
         (
             "fee,f",
-            value<uint64_t>(&option_.fee)->default_value(10000),
+            value<uint64_t>(&argument_.fee)->default_value(10000),
             "Transaction fee. defaults to 10000 ETP bits"
-        );
+        )
+        ;
 
         return options;
     }
@@ -116,27 +109,25 @@ public:
     }
 
     console_result invoke (Json::Value& jv_output,
-         libbitcoin::server::server_node& node) override;
+                           libbitcoin::server::server_node& node) override;
 
     struct argument
     {
-        std::vector<std::string> receivers;
+        argument() :
+            fee(0)
+        {}
+		std::vector<std::string> receivers;
+        std::string from;
+        uint64_t fee;
     } argument_;
 
     struct option
     {
-        option():fee(10000), from(""), change(""), memo("")
-        {};
-
-        uint64_t fee;
-        std::string from;
-        std::string change;
-        std::string memo;
-        colon_delimited2_item<uint64_t, uint64_t> exclude = { 0, 0 };
+        std::string symbol;
+        uint16_t type;
     } option_;
 
 };
-
 
 
 } // namespace commands

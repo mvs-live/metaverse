@@ -46,6 +46,11 @@ console_result sendmore::invoke (Json::Value& jv_output,
         from_did = option_.from;
     }
 
+    if (!option_.exclude.is_valid()) {
+		throw argument_legality_exception("invalid exclude option! "
+			+ option_.exclude.encode_colon_delimited());
+	}
+    
     // receiver
     std::vector<receiver_record> receiver;
 
@@ -83,10 +88,12 @@ console_result sendmore::invoke (Json::Value& jv_output,
             chain::attachment(0, 0, chain::blockchain_message(option_.memo))});
     }
 
-    auto send_helper = sending_etp(*this, blockchain,
-        std::move(auth_.name), std::move(auth_.auth),
-        std::move(from_address), std::move(receiver),
-        std::move(change_address), option_.fee);
+    auto send_helper = sending_etp(
+		*this, blockchain,
+		std::move(auth_.name), std::move(auth_.auth),
+		std::move(from_address), std::move(receiver),
+		std::move(change_address), option_.fee, 0,
+		std::make_pair(option_.exclude.first(), option_.exclude.second()));
 
     send_helper.exec();
 
